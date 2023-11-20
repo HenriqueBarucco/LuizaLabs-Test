@@ -21,8 +21,10 @@ public class FilesController {
     }
 
     @Operation(summary = "Send file.", description = "Popula o banco de dados com o arquivo base.")
-    @PostMapping
-    public ResponseEntity<String> processFile(@RequestParam("file") MultipartFile file) {
+    @RequestMapping(method = RequestMethod.POST, consumes = "multipart/form-data")
+    public ResponseEntity<String> processFile(
+            @RequestPart("file") MultipartFile file
+    ) {
         try {
             if (file.isEmpty()) {
                 return ResponseEntity.badRequest().body("Please upload a file");
