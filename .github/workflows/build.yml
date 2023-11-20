@@ -21,10 +21,10 @@ jobs:
           java-version: '21'
 
       - name: Maven Build
-        run: LuizaLabs-API/mvn package
+        run: ./LuizaLabs-API/mvn package
 
       - name: Archive Build
         uses: actions/upload-artifact@v3
         with:
           name: luiza-labs-api
-          path: LuizaLabs-API/target/*.jar
+          path: ./LuizaLabs-API/target/*.jar
