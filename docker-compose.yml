@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:7.2.3
+    container_name: redis-luiza-labs
+    restart: unless-stopped
+    expose:
+      - 6379
+    networks:
+      - cache
+    volumes:
+        - redis:/data
+
+  mysql:
+    image: mysql:8.0
+    restart: always
+    container_name: mysql-luiza-labs
+    environment:
+      MYSQL_DATABASE: 'luizalabs'
+      MYSQL_USER: 'hbarucco'
+      MYSQL_PASSWORD: '123456'
+      MYSQL_ROOT_PASSWORD: '123456'
+    expose:
+      - 3306
+    networks:
+      - database
+    depends_on:
+      - redis
+    volumes:
+        - mysql:/var/lib/mysql
+
+  api:
+    build:
+      context: ./LuizaLabs-API/
+      dockerfile: Dockerfile
+    image: api-luiza-labs
+    container_name: api-luiza-labs
+    restart: unless-stopped
+    networks:
+      - database
+      - cache
+      - api
+    ports:
+        - "8080:8080"
+    depends_on:
+      - mysql
+    healthcheck:
+      test: "curl -sS http://api:8080/actuator/health"
+      interval: 1s
+      timeout: 30s
+      retries: 60
+
+networks:
+  database:
+    internal: true
+  cache:
+    internal: true
+  api:
+
+volumes:
+    mysql:
+    redis:
