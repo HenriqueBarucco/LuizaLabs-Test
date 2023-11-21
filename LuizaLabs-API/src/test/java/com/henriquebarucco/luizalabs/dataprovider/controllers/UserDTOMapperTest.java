@@ -30,7 +30,7 @@ class UserDTOMapperTest {
 
         UserResponse userResponse = userDTOMapper.toUserResponse(user);
 
-        UserResponse expectedUserResponse = new UserResponse(1L, "Henrique", List.of(new OrderResponse(1L, "10.0", "2023-11-20", List.of(new ProductResponse(1L, "10.0")))));
+        UserResponse expectedUserResponse = new UserResponse(1L, "Henrique", List.of(new OrderResponse(1L, "10.00", "2023-11-20", List.of(new ProductResponse(1L, "10.0")))));
 
         assertEquals(expectedUserResponse, userResponse);
     }
