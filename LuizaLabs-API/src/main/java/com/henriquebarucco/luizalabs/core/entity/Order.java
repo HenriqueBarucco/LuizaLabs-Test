@@ -1,7 +1,6 @@
 package com.henriquebarucco.luizalabs.core.entity;
 
 import java.io.Serializable;
-import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -22,11 +21,13 @@ public class Order implements Serializable {
         this.calculateTotal();
     }
 
-    private void calculateTotal() {
-        Double total = products.stream().mapToDouble(Product::getValue).sum();
-        DecimalFormat df = new DecimalFormat("#,##");
+    public Order(Long id, LocalDate date) {
+        this.id = id;
+        this.date = date;
+    }
 
-        this.total = Double.parseDouble(df.format(total));
+    private void calculateTotal() {
+        this.total = products.stream().mapToDouble(Product::getValue).sum();
     }
 
     public Long getId() {
