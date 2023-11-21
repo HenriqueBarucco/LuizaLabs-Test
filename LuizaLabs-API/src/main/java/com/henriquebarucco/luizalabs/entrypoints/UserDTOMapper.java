@@ -7,9 +7,13 @@ import com.henriquebarucco.luizalabs.entrypoints.user.dto.OrderResponse;
 import com.henriquebarucco.luizalabs.entrypoints.user.dto.ProductResponse;
 import com.henriquebarucco.luizalabs.entrypoints.user.dto.UserResponse;
 
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 public class UserDTOMapper {
+
+    private final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public UserResponse toUserResponse(User user) {
         return new UserResponse(
@@ -22,8 +26,8 @@ public class UserDTOMapper {
     public OrderResponse toOrderResponse(Order order) {
         return new OrderResponse(
                 order.getId(),
-                order.getTotal().toString(),
-                order.getDate(),
+                String.format(Locale.US, "%.2f", order.getTotal()),
+                order.getDate().format(this.DATE_FORMATTER),
                 order.getProducts().stream().map(this::toProductResponse).collect(Collectors.toList())
         );
     }

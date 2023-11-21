@@ -25,12 +25,12 @@ class UserDTOMapperTest {
     @Test
     void testToUserResponse() {
         Product product = new Product(1L, 10.0);
-        Order order = new Order(1L, LocalDate.now(), List.of(product));
+        Order order = new Order(1L, LocalDate.of(2023, 11, 20), List.of(product));
         User user = new User(1L, "Henrique", List.of(order));
 
         UserResponse userResponse = userDTOMapper.toUserResponse(user);
 
-        UserResponse expectedUserResponse = new UserResponse(1L, "Henrique", List.of(new OrderResponse(1L, "10.0", LocalDate.now(), List.of(new ProductResponse(1L, "10.0")))));
+        UserResponse expectedUserResponse = new UserResponse(1L, "Henrique", List.of(new OrderResponse(1L, "10.0", "2023-11-20", List.of(new ProductResponse(1L, "10.0")))));
 
         assertEquals(expectedUserResponse, userResponse);
     }
