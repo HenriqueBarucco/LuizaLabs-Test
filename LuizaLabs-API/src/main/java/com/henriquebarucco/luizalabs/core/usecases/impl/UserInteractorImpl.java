@@ -25,11 +25,6 @@ public class UserInteractorImpl implements UserInteractor {
     }
 
     @Override
-    public void addOrderToUser(User user, Long orderId, LocalDate purchaseDate, Long productId, Double productValue) {
-        userGateway.addOrder(user, orderId, purchaseDate, productId, productValue);
-    }
-
-    @Override
     public List<User> listAllUsers() {
         return userGateway.listAllUsers();
     }

@@ -1,10 +1,9 @@
 package com.henriquebarucco.luizalabs.dataprovider.gateways.user;
 
+import com.henriquebarucco.luizalabs.core.exceptions.ResourceNotFoundException;
 import com.henriquebarucco.luizalabs.core.gateways.UserGateway;
 import com.henriquebarucco.luizalabs.core.entity.User;
 import com.henriquebarucco.luizalabs.dataprovider.gateways.user.mapper.UserEntityMapper;
-import com.henriquebarucco.luizalabs.dataprovider.persistence.order.OrderRepository;
-import com.henriquebarucco.luizalabs.dataprovider.persistence.product.ProductRepository;
 import com.henriquebarucco.luizalabs.dataprovider.persistence.user.UserRepository;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
@@ -26,17 +25,11 @@ public class UserRepositoryGatewayTest {
     private UserRepository userRepository;
 
     @Autowired
-    private OrderRepository orderRepository;
-
-    @Autowired
-    private ProductRepository productRepository;
-
-    @Autowired
     private UserEntityMapper userEntityMapper;
 
     @Test
     public void testCreateUser() {
-        UserGateway userGateway = new UserRepositoryGateway(userRepository, orderRepository, productRepository, userEntityMapper);
+        UserGateway userGateway = new UserRepositoryGateway(userRepository, userEntityMapper);
 
         User user = new User(1L, "Henrique");
         User createdUser = userGateway.createUser(user);
@@ -46,7 +39,7 @@ public class UserRepositoryGatewayTest {
 
     @Test
     public void testGetUserIfExist() {
-        UserGateway userGateway = new UserRepositoryGateway(userRepository, orderRepository, productRepository, userEntityMapper);
+        UserGateway userGateway = new UserRepositoryGateway(userRepository, userEntityMapper);
 
         User user = new User(1L, "Henrique");
         User createdUser = userGateway.createUser(user);
@@ -58,10 +51,29 @@ public class UserRepositoryGatewayTest {
 
     @Test
     public void testGetUserIfNotExist() {
-        UserGateway userGateway = new UserRepositoryGateway(userRepository, orderRepository, productRepository, userEntityMapper);
+        UserGateway userGateway = new UserRepositoryGateway(userRepository, userEntityMapper);
 
         User user = userGateway.getUser(1L, "Henrique");
 
         assertEquals(user.getId(), 1L);
+    }
+
+    @Test
+    void shouldReturnUserById() {
+        UserGateway userGateway = new UserRepositoryGateway(userRepository, userEntityMapper);
+
+        User user = new User(1L, "Henrique");
+        userGateway.createUser(user);
+
+        User userResponse = userGateway.getUserById(1L);
+
+        assertEquals(userResponse.getId(), user.getId());
+    }
+
+    @Test
+    void shouldThrowExceptionWhenUserByIdItsNotFound() {
+        UserGateway userGateway = new UserRepositoryGateway(userRepository, userEntityMapper);
+
+        assertThrows(ResourceNotFoundException.class, () -> userGateway.getUserById(1L));
     }
 }

@@ -4,6 +4,8 @@ import com.henriquebarucco.luizalabs.core.gateways.OrderGateway;
 import com.henriquebarucco.luizalabs.dataprovider.gateways.order.OrderRepositoryGateway;
 import com.henriquebarucco.luizalabs.dataprovider.gateways.order.mapper.OrderEntityMapper;
 import com.henriquebarucco.luizalabs.dataprovider.persistence.order.OrderRepository;
+import com.henriquebarucco.luizalabs.dataprovider.persistence.product.ProductRepository;
+import com.henriquebarucco.luizalabs.dataprovider.persistence.user.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -11,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 public class OrderGatewayConfig {
 
     @Bean
-    public OrderGateway orderGateway(OrderRepository orderRepository, OrderEntityMapper orderEntityMapper) {
-        return new OrderRepositoryGateway(orderRepository, orderEntityMapper);
+    public OrderGateway orderGateway(OrderRepository orderRepository, UserRepository userRepository, ProductRepository productRepository, OrderEntityMapper orderEntityMapper) {
+        return new OrderRepositoryGateway(orderRepository, userRepository, productRepository, orderEntityMapper);
     }
 }

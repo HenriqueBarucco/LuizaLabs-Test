@@ -1,5 +1,7 @@
 package com.henriquebarucco.luizalabs.core.usecases.impl;
 
+import com.henriquebarucco.luizalabs.core.entity.Product;
+import com.henriquebarucco.luizalabs.core.entity.User;
 import com.henriquebarucco.luizalabs.core.gateways.OrderGateway;
 import com.henriquebarucco.luizalabs.core.usecases.OrderInteractor;
 import com.henriquebarucco.luizalabs.core.entity.Order;
@@ -28,5 +30,15 @@ public class OrderInteractorImpl implements OrderInteractor {
     @Override
     public Order getOrderById(Long orderId) {
         return orderGateway.getOrderById(orderId);
+    }
+
+    @Override
+    public Order createOrder(User user, Order order) {
+        return orderGateway.createOrder(user, order);
+    }
+
+    @Override
+    public void addProductToOrder(Order order, Product product) {
+        orderGateway.addProductToOrder(order, product);
     }
 }

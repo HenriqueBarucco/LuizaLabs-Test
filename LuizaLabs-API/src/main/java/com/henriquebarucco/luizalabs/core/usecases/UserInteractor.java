@@ -11,8 +11,6 @@ public interface UserInteractor {
 
     User getUser(Long userId, String name);
 
-    void addOrderToUser(User user, Long orderId, LocalDate purchaseDate, Long productId, Double productValue);
-
     List<User> listAllUsers();
 
     List<User> listAllUsersByDate(LocalDate startDate, LocalDate endDate);
