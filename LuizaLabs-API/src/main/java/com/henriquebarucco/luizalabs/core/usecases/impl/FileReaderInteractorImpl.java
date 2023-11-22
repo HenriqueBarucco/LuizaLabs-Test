@@ -1,5 +1,6 @@
 package com.henriquebarucco.luizalabs.core.usecases.impl;
 
+import com.henriquebarucco.luizalabs.core.entity.ProcessedFiles;
 import com.henriquebarucco.luizalabs.core.gateways.FileGateway;
 import com.henriquebarucco.luizalabs.core.usecases.FileReaderInteractor;
 
@@ -12,7 +13,7 @@ public class FileReaderInteractorImpl implements FileReaderInteractor {
         this.fileGateway = fileGateway;
     }
 
-    public void processFile(InputStream inputStream) {
-        fileGateway.processFile(inputStream);
+    public ProcessedFiles processFile(InputStream inputStream) {
+        return fileGateway.processFile(inputStream);
     }
 }

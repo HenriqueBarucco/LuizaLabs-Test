@@ -1,7 +1,10 @@
 package com.henriquebarucco.luizalabs.dataprovider.gateways.file;
 
 import com.henriquebarucco.luizalabs.core.entity.Order;
+import com.henriquebarucco.luizalabs.core.entity.ProcessedFiles;
 import com.henriquebarucco.luizalabs.core.entity.Product;
+import com.henriquebarucco.luizalabs.core.exceptions.FileProcessException;
+import com.henriquebarucco.luizalabs.core.exceptions.FileReaderException;
 import com.henriquebarucco.luizalabs.core.gateways.FileGateway;
 import com.henriquebarucco.luizalabs.core.usecases.OrderInteractor;
 import com.henriquebarucco.luizalabs.core.usecases.UserInteractor;
@@ -27,26 +30,37 @@ public class FileReaderGateway implements FileGateway {
 
 
     @Override
-    public void processFile(InputStream inputStream) {
+    public ProcessedFiles processFile(InputStream inputStream) {
         try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))) {
             String line;
+            ProcessedFiles processedFiles = new ProcessedFiles();
+
             while ((line = br.readLine()) != null) {
-                this.processLine(line);
+                try {
+                    this.processLine(line);
+                    processedFiles.addTotalProcessed();
+                } catch (FileProcessException e) {
+                    processedFiles.addError(e.getMessage());
+                }
             }
+
+            return processedFiles;
         } catch (IOException e) {
-            throw new RuntimeException("Error processing the file", e);
+            throw new FileReaderException("Error processing the file", e.getCause());
         }
     }
 
     @Override
-    public void processLine(String line) {
-        FileObject object = fileObjectFactory.create(line);
+    public void processLine(String line) throws FileProcessException {
+        try {
+            FileObject object = fileObjectFactory.create(line);
 
-        User user = userInteractor.getUser(object.getUserId(), object.getName());
-        Order order = orderInteractor.createOrder(user, new Order(object.getOrderId(), object.getPurchaseDate()));
+            User user = userInteractor.getUser(object.getUserId(), object.getName());
+            Order order = orderInteractor.createOrder(user, new Order(object.getOrderId(), object.getPurchaseDate()));
 
-        orderInteractor.addProductToOrder(order, new Product(object.getProductId(), object.getProductValue()));
-
-        System.out.println(object);
+            orderInteractor.addProductToOrder(order, new Product(object.getProductId(), object.getProductValue()));
+        } catch (Exception e) {
+            throw new FileProcessException("Error processing the line: " + line, e.getCause());
+        }
     }
 }

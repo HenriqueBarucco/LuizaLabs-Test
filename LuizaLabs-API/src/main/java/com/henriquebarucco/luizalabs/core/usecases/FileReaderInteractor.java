@@ -1,7 +1,9 @@
 package com.henriquebarucco.luizalabs.core.usecases;
 
+import com.henriquebarucco.luizalabs.core.entity.ProcessedFiles;
+
 import java.io.InputStream;
 
 public interface FileReaderInteractor {
-    void processFile(InputStream inputStream);
+    ProcessedFiles processFile(InputStream inputStream);
 }
