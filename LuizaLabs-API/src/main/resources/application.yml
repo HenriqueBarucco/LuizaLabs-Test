@@ -1,0 +1,8 @@
+application:
+  name: LuizaLabs-API
+  version: @project.version@
+  description: API para o teste técnico de backend.
+
+server:
+  error:
+    include-stacktrace: never

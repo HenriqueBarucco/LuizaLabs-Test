@@ -4,6 +4,7 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.servers.Server;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -14,6 +15,13 @@ import java.util.List;
 @EnableWebMvc
 @Configuration
 public class SwaggerConfig {
+
+    @Value("${application.name}")
+    private String name;
+    @Value("${application.version}")
+    private String version;
+    @Value("${application.description}")
+    private String description;
 
     @Bean
     public OpenAPI myOpenAPI() throws UnknownHostException {
@@ -28,9 +36,9 @@ public class SwaggerConfig {
         contact.setUrl("https://www.henriquebarucco.com.br");
 
         Info info = new Info()
-                .title("LuizaLabs - Test")
-                .version("1.0.0")
-                .description("API para o teste técnico de backend.")
+                .title(name)
+                .version(version)
+                .description(description)
                 .contact(contact)
                 .termsOfService("https://henriquebarucco.com.br/");
 
