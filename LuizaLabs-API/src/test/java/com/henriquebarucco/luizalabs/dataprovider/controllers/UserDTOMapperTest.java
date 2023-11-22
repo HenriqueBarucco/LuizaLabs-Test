@@ -23,7 +23,7 @@ class UserDTOMapperTest {
     }
 
     @Test
-    void testToUserResponse() {
+    public void testToUserResponse() {
         Product product = new Product(1L, 10.0);
         Order order = new Order(1L, LocalDate.of(2023, 11, 20), List.of(product));
         User user = new User(1L, "Henrique", List.of(order));

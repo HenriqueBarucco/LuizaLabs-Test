@@ -5,7 +5,7 @@ import lombok.Getter;
 
 import java.time.LocalDate;
 
-@EqualsAndHashCode
+@EqualsAndHashCode(of = {"userId", "name", "orderId", "productId", "productValue", "purchaseDate"})
 @Getter
 public class FileObject {
     private Long userId;

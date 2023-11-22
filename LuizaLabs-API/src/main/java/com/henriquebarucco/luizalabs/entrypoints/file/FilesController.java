@@ -32,7 +32,7 @@ public class FilesController {
     ) {
         try {
             if (file.isEmpty()) {
-                throw new FileReaderException("Please upload a file");
+                return ResponseEntity.badRequest().build();
             }
 
             ProcessedFiles processedFiles = fileReaderInteractor.processFile(file.getInputStream());

@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class FileObjectFactoryImplTest {
 
     @Test
-    void create() {
+    public void create() {
         FileObjectFactory fileObjectFactory = new FileObjectFactoryImpl();
 
         FileObject fileObject = new FileObject(1L, "Henrique", 2L, 1L, 50.0, LocalDate.of(2023, 11, 19));

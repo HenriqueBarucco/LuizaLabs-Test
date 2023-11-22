@@ -13,6 +13,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.time.LocalDate;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional
@@ -59,7 +62,7 @@ public class UserRepositoryGatewayTest {
     }
 
     @Test
-    void shouldReturnUserById() {
+    public void shouldReturnUserById() {
         UserGateway userGateway = new UserRepositoryGateway(userRepository, userEntityMapper);
 
         User user = new User(1L, "Henrique");
@@ -71,9 +74,32 @@ public class UserRepositoryGatewayTest {
     }
 
     @Test
-    void shouldThrowExceptionWhenUserByIdItsNotFound() {
+    public void shouldThrowExceptionWhenUserByIdItsNotFound() {
         UserGateway userGateway = new UserRepositoryGateway(userRepository, userEntityMapper);
 
         assertThrows(ResourceNotFoundException.class, () -> userGateway.getUserById(1L));
+    }
+
+    @Test
+    public void testListAllUsers() {
+        UserGateway userGateway = new UserRepositoryGateway(userRepository, userEntityMapper);
+
+        User user = new User(1L, "Henrique");
+        userGateway.createUser(user);
+
+        assertEquals(1, userGateway.listAllUsers().size());
+    }
+
+    @Test
+    public void testListAllOrdersByDate() {
+        UserGateway userGateway = new UserRepositoryGateway(userRepository, userEntityMapper);
+
+        User user = new User(1L, "Henrique");
+
+        userGateway.createUser(user);
+
+        List<User> allUsers = userGateway.listAllUsersByDate(LocalDate.of(2023, 11, 1), LocalDate.of(2023, 11, 1));
+
+        assertEquals(0, allUsers.size());
     }
 }
